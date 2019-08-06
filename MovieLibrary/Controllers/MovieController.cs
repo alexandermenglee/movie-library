@@ -35,18 +35,31 @@ namespace MovieLibrary.Controllers
         }
 
         // POST: api/Movie
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Movie newMovie)
         {
+            db.Movies.Add(newMovie);
+            db.SaveChanges();
         }
 
         // PUT: api/Movie/5
-        public void Put(int id, [FromBody]string value)
+        public void Put([FromUri]int id, [FromBody]Movie movie)
         {
+            Movie foundMovie = db.Movies.Find(id);
+            foundMovie.Title = movie.Title;
+            foundMovie.Genre = movie.Genre;
+            foundMovie.DirectorName = movie.DirectorName;
+
+            db.SaveChanges();
         }
 
         // DELETE: api/Movie/5
-        public void Delete(int id)
-        {
-        }
+        //public void Delete(int id)
+        //{
+        //    Movie foundMovie = db.Movies.Find(id);
+        //    db.Movies.Remove(foundMovie);
+
+        //    db.SaveChanges();
+        //}
     }
 }
+
