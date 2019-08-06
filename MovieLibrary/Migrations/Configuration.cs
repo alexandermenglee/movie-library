@@ -1,0 +1,29 @@
+namespace MovieLibrary.Migrations
+{
+    using System;
+    using System.Data.Entity;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<MovieLibrary.Models.ApplicationDbContext>
+    {
+        public Configuration()
+        {
+            AutomaticMigrationsEnabled = false;
+        }
+
+        protected override void Seed(MovieLibrary.Models.ApplicationDbContext context)
+        {
+            //  This method will be called after migrating to the latest version.
+
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
+            //  to avoid creating duplicate seed data.
+
+            context.Movies.AddOrUpdate(m => m.MovieId,
+                new Models.Movie() { MovieId = 1, Title = "The Wolf of Wall Street", Genre = "Drama/Comedy", DirectorName = "Martin Scorsese" },
+                new Models.Movie() { MovieId = 2, Title = "Lion King Live Action", Genre = "Kids", DirectorName = "Jon Favreau" },
+                new Models.Movie() { MovieId = 3, Title = "Avengers End Game", Genre = "Action", DirectorName = "Anthony Russo" }
+                ); ;
+        }
+    }
+}

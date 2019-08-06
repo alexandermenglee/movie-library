@@ -212,6 +212,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908061605076_Initial Migration.cs" />
+    <Compile Include="Migrations\201908061605076_Initial Migration.Designer.cs">
+      <DependentUpon>201908061605076_Initial Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908061614494_Added Key To Movie Model.cs" />
+    <Compile Include="Migrations\201908061614494_Added Key To Movie Model.Designer.cs">
+      <DependentUpon>201908061614494_Added Key To Movie Model.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908061658331_SeedingDatabase.cs" />
+    <Compile Include="Migrations\201908061658331_SeedingDatabase.Designer.cs">
+      <DependentUpon>201908061658331_SeedingDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -309,6 +322,17 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201908061605076_Initial Migration.resx">
+      <DependentUpon>201908061605076_Initial Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908061614494_Added Key To Movie Model.resx">
+      <DependentUpon>201908061614494_Added Key To Movie Model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908061658331_SeedingDatabase.resx">
+      <DependentUpon>201908061658331_SeedingDatabase.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
