@@ -35,21 +35,38 @@ namespace MovieLibrary.Controllers
         }
 
         // POST: api/Movie
-        public void Post([FromBody]Movie newMovie)
+        public IHttpActionResult Post([FromBody]Movie newMovie)
         {
+            if(newMovie == null)
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
+
             db.Movies.Add(newMovie);
             db.SaveChanges();
+
+            return StatusCode(HttpStatusCode.Created);
         }
 
         // PUT: api/Movie/5
-        public void Put([FromUri]int id, [FromBody]Movie movie)
+        public IHttpActionResult Put([FromUri]int id, [FromBody]Movie movie)
         {
-            Movie foundMovie = db.Movies.Find(id);
-            foundMovie.Title = movie.Title;
-            foundMovie.Genre = movie.Genre;
-            foundMovie.DirectorName = movie.DirectorName;
+            try
+            {
+                Movie foundMovie = db.Movies.Find(id);
 
-            db.SaveChanges();
+                foundMovie.Title = movie.Title;
+                foundMovie.Genre = movie.Genre;
+                foundMovie.DirectorName = movie.DirectorName;
+
+                db.SaveChanges();
+
+                return StatusCode(HttpStatusCode.OK);
+            }
+            catch
+            {
+                return StatusCode(HttpStatusCode.BadRequest);
+            }
         }
 
         // DELETE: api/Movie/5
