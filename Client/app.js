@@ -24,7 +24,8 @@
                     <hr>
                     `;
                     
-                    $(movieList).append(HTMLString);
+                $(movieList).append(HTMLString);
+                console.log(endpoint);
                 });
             },
             error: function (error) {
@@ -96,29 +97,31 @@
     }
 
     /****************************** POST Request ******************************/
-    // function createMovie(e) {
-    //     var dict = {
-    //         Title: this["title"].value,
-    //         Director: this["director"].value
+    function createMovie(e) {
+        var movie = {
+            Title: this["title"].value,
+            Genre: this["genre"].value,
+            DirectorName: this["director"].value
+            
+        };
+        console.log(endpoint);
+        $.ajax({
+            url: endpoint,
+            dataType: 'json',
+            type: 'post',
+            contentType: 'application/json',
+            data: JSON.stringify(movie),
+            success: function(){
+                getMovies();
+                console.log('success on posting');
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
 
-    //     };
-
-    //     $.ajax({
-    //         url: 'endpoint',
-    //         dataType: 'json',
-    //         type: 'post',
-    //         contentType: 'application/json',
-    //         data: JSON.stringify(dict),
-    //         success: function (data, textStatus, jQxhr) {
-    //             $('#response pre').html(data);
-    //         },
-    //         error: function (jqXhr, textStatus, errorThrown) {
-    //             console.log(errorThrown);
-    //         }
-    //     });
-
-    //     e.preventDefault();
-    // }
-    // $('#create-movie').submit(createMovie);
+        e.preventDefault();
+    }
+    $('#my-form').submit(createMovie);
 })();
 

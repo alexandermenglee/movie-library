@@ -45,7 +45,7 @@ namespace MovieLibrary.Controllers
             db.Movies.Add(newMovie);
             db.SaveChanges();
 
-            return StatusCode(HttpStatusCode.Created);
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // PUT: api/Movie/5
