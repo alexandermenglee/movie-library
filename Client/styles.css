@@ -1,11 +1,9 @@
-* {
-    font-family: 'EB Garamond', serif;
+html {
+    font-family: 'Special Elite', cursive;
 }
 
 h1 {
     font-size: 5.5em;
-    font-family: 'EB Garamond', serif;
-    font-family: 'Shadows Into Light', cursive;
     text-shadow: 0px 3px 0px #b2a98f,
                  0px 14px 10px rgba(0,0,0,0.15),
                  0px 24px 2px rgba(0,0,0,0.1),
@@ -14,14 +12,21 @@ h1 {
 
 #add-to-list-text {
     font-size: 2em;
-    font-family: 'EB Garamond', serif;
-    font-family: 'Shadows Into Light', cursive;
+}
+
+input[type='text'] {
+    font-family: 'Special Elite', cursive;;
+}
+
+input:focus {
+    transform: scale(1.25, 1.25);
 }
 
 button {
     background: #40AFFF;
     box-shadow: 4px 4px 7px grey;
     color: white;
+    font-family: inherit;
 }
 
 button:hover {
