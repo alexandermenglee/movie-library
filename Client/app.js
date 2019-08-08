@@ -14,13 +14,13 @@
             type: 'GET',
             success: function (data) {
                 movies = data;
-                // debugger;
+
                 movies.forEach(movie => {
                     HTMLString = `
-                    <div id='DisplaySection-${ movie.MovieId }'>
-                        <h3 class='display-${ movie.MovieId }'>${ movie.Title }</h3>
-                        <h4 class='display-${ movie.MovieId }'>${ movie.DirectorName }</h4>
-                        <h5 class='display-${ movie.MovieId }'>${ movie.Genre }</h5>
+                    <div id='DisplaySection-${ movie.MovieId }' class='center-movie'>
+                        <p class='display-${ movie.MovieId } title'>${ movie.Title }</p>
+                        <p class='display-${ movie.MovieId } director-name'>${ movie.DirectorName }</p>
+                        <p class='display-${ movie.MovieId } genre'>${ movie.Genre }</p>
                         <button id='MovieId-${ movie.MovieId }' class='show-more'> More Info </button>
                         <button id='EditMovieId-${ movie.MovieId }' class='edit-movie'> Edit </button>
                         <hr></hr>
@@ -152,9 +152,8 @@
     function updateMovie(e) {
         var movie = {
             Title: this["title"].value,
-            Genre: this["genre"].value,
-            DirectorName: this["director"].value
-
+            DirectorName: this["director"].value,
+            Genre: this["genre"].value
         };
 
         $.ajax({
