@@ -5,6 +5,7 @@
     let movies = [];
     let movieList = document.getElementById('movie-list');
     let HTMLString;
+    let editing = false;
     
 /****************************** GET Request ******************************/
     // Displays all movies
@@ -22,8 +23,8 @@
                         <p class='display-${ movie.MovieId } title'>${ movie.Title }</p>
                         <p class='display-${ movie.MovieId } director-name'>${ movie.DirectorName }</p>
                         <p class='display-${ movie.MovieId } genre'>${ movie.Genre }</p>
-                        <button id='MovieId-${ movie.MovieId }' class='show-more'> More Info </button>
-                        <button id='EditMovieId-${ movie.MovieId }' class='edit-movie'> Edit </button>
+                        <button id='MovieId-${ movie.MovieId }' class='show-more btn'> More Info </button>
+                        <button id='EditMovieId-${ movie.MovieId }' class='edit-movie btn'> Edit </button>
                         <hr></hr>
                     </div>
                     `;
@@ -97,6 +98,12 @@
     }
     /****************************** PUT Request ******************************/
     $(document).on('click', '.edit-movie', function (event) {
+
+        if(editing === true) {
+            return alert("Please finish updating the currently selected movie");
+        }
+
+
         let id = extractId(event.target.getAttribute("id"));
         let headerClass = `display-${id}`;
         let displayDivId = `DisplaySection-${id}`;
@@ -107,6 +114,8 @@
         let hrTag;
         let updateButton;
         let updateForm;
+        debugger;
+        editing = true;
 
         $(displayDiv).empty();
         
@@ -163,6 +172,7 @@
             data: JSON.stringify(movie),
             success: function () {
                 endpoint = resetEndpoint(endpoint);
+                editing = false;
                 $(movieList).empty();
                 getMovies();
             },
@@ -173,7 +183,6 @@
 
         e.preventDefault();
     }
-
     /****************************** POST Request ******************************/
     function createMovie(e) {
         var movie = {
