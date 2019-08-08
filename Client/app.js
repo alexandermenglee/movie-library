@@ -1,4 +1,5 @@
 (function init() {
+    console.log("Don't resize. Not optimized for mobile.");
     // variable declaration
     let endpoint = "https://localhost:44367/api/movie/";
     let movies = [];
@@ -17,7 +18,7 @@
 
                 movies.forEach(movie => {
                     HTMLString = `
-                    <div id='DisplaySection-${ movie.MovieId }' class='center-movie'>
+                    <div id='DisplaySection-${ movie.MovieId }'>
                         <p class='display-${ movie.MovieId } title'>${ movie.Title }</p>
                         <p class='display-${ movie.MovieId } director-name'>${ movie.DirectorName }</p>
                         <p class='display-${ movie.MovieId } genre'>${ movie.Genre }</p>
@@ -26,14 +27,12 @@
                         <hr></hr>
                     </div>
                     `;
-                    console.log(HTMLString);
                     
                 $(movieList).append(HTMLString);
-                console.log(endpoint);
                 });
             },
             error: function (error) {
-                console.log(error);
+                return error;
             }
         });
     };
@@ -58,7 +57,7 @@
             },
             err: error => {
                 endpoint = resetEndpoint(endpoint);
-                console.log(error)
+                return error;
             }
         });
     });
@@ -166,10 +165,9 @@
                 endpoint = resetEndpoint(endpoint);
                 $(movieList).empty();
                 getMovies();
-                console.log('success on updating');
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                console.log(errorThrown);
+                return errorThrown
             }
         });
 
@@ -184,7 +182,6 @@
             DirectorName: this["director"].value
             
         };
-        console.log(endpoint);
         $.ajax({
             url: endpoint,
             dataType: 'json',
@@ -193,10 +190,9 @@
             data: JSON.stringify(movie),
             success: function(){
                 getMovies();
-                console.log('success on posting');
             },
             error: function (jqXhr, textStatus, errorThrown) {
-                console.log(errorThrown);
+                return errorThrown;
             }
         });
 

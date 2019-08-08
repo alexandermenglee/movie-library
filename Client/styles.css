@@ -2,7 +2,30 @@
     font-family: 'EB Garamond', serif;
 }
 
-.center-movie {
+h1 {
+    font-size: 5.5em;
+    font-family: 'EB Garamond', serif;
+    font-family: 'Shadows Into Light', cursive;
+    text-shadow: 2px 2px 5px;
+}
+
+#add-to-list-text {
+    font-size: 2em;
+    font-family: 'EB Garamond', serif;
+    font-family: 'Shadows Into Light', cursive;
+}
+
+button {
+    background: #40AFFF;
+    box-shadow: 4px 4px 7px grey;
+    color: white;
+}
+
+button:hover {
+    transform:scale(1.25,1.25);
+}
+
+.center-content {
     margin-right: 25%;
     margin-left: 25%;
     text-align: center;
@@ -29,4 +52,15 @@ input {
 
 button {
     border-radius: 5px;
+}
+
+#my-form input {
+    margin-right: 10px;
+}
+
+#update-form input{
+    border: 1px solid #40BEFF;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
