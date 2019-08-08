@@ -14,6 +14,7 @@
             type: 'GET',
             success: function (data) {
                 movies = data;
+                // debugger;
                 movies.forEach(movie => {
                     HTMLString = `
                     <div id='DisplaySection-${ movie.MovieId }'>
@@ -102,56 +103,79 @@
         let displayDivId = `DisplaySection-${id}`;
         let headerValues = Array.prototype.slice.call(document.querySelectorAll(`.${ headerClass }`)).map(el => el.textContent);
         let displayDiv = document.getElementById(displayDivId);
+        let formTag;
         let input;
         let hrTag;
         let updateButton;
-        let htmlInputString = `
-        <input='text' name='title' value='${headerValues[0]}'>
-        <input='text' name='title' value='${headerValues[1]}'>
-        <input='text' name='title' value='${headerValues[2]}'>
-        <button type="submit" id="edit-movie">Update</button>
-        `;
+        let updateForm;
 
         $(displayDiv).empty();
         
+        formTag = document.createElement('form');
+        formTag.id = 'update-form';
+        displayDiv.appendChild(formTag);
+        updateForm = document.getElementById('update-form');
+
         for(let i = 0; i < headerValues.length; i++) {
             input = document.createElement('input');
             input.type = 'text';
+
+            switch(i) {
+                case 0:
+                    input.name = 'title';
+                    break;
+                case 1:
+                    input.name = 'director';
+                    break;
+                case 2:
+                        input.name = 'genre';
+                        break;
+            }
+            input.id = `EditMovie-${id}`;
             input.value = headerValues[i];
-            displayDiv.appendChild(input);
+            updateForm.appendChild(input);
         }
 
         hrTag = document.createElement('hr');
         updateButton = document.createElement('button');
-        updateButton.id = 'edit-movie-button';
+        updateButton.type = 'submit';
+        updateButton.id = 'edit-movie-btn';
         updateButton.textContent = "Update";
 
         displayDiv.appendChild(updateButton);
         displayDiv.appendChild(hrTag);
 
-        document.getElementById('edit-movie-button').addEventListener('click', () => console.log('coming from the edit update btn'));
-        
-
-        // change headings to input='text'
-            // grab all headings with same class 
-            // change remove class 
-        // concatenate id onto endpoint
         endpoint = endpoint + id;
-
-        // $.ajax({
-        //     url: endpoint,
-        //     dataType: 'json',
-        //     type: 'PUT',
-        //     success: result => {
-        //         endpoint = resetEndpoint(endpoint);
-        //         displayMovie(result);
-        //     },
-        //     err: error => {
-        //         endpoint = resetEndpoint(endpoint);
-        //         console.log(error)
-        //     }
-        // });
+        document.getElementById('edit-movie-btn').addEventListener('click', updateMovie.bind(updateForm));
     });
+
+    function updateMovie(e) {
+        var movie = {
+            Title: this["title"].value,
+            Genre: this["genre"].value,
+            DirectorName: this["director"].value
+
+        };
+
+        $.ajax({
+            url: endpoint,
+            dataType: 'json',
+            type: 'put',
+            contentType: 'application/json',
+            data: JSON.stringify(movie),
+            success: function () {
+                endpoint = resetEndpoint(endpoint);
+                $(movieList).empty();
+                getMovies();
+                console.log('success on updating');
+            },
+            error: function (jqXhr, textStatus, errorThrown) {
+                console.log(errorThrown);
+            }
+        });
+
+        e.preventDefault();
+    }
 
     /****************************** POST Request ******************************/
     function createMovie(e) {
@@ -161,7 +185,7 @@
             DirectorName: this["director"].value
             
         };
-
+        console.log(endpoint);
         $.ajax({
             url: endpoint,
             dataType: 'json',
@@ -179,6 +203,8 @@
 
         e.preventDefault();
     }
+
     $('#my-form').submit(createMovie);
+
 })();
 

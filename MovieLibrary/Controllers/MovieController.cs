@@ -61,7 +61,7 @@ namespace MovieLibrary.Controllers
 
                 db.SaveChanges();
 
-                return StatusCode(HttpStatusCode.OK);
+                return StatusCode(HttpStatusCode.NoContent);
             }
             catch
             {
