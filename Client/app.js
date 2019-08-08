@@ -4,7 +4,6 @@
     let movies = [];
     let movieList = document.getElementById('movie-list');
     let HTMLString;
-    let id;
     
 /****************************** GET Request ******************************/
     // Displays all movies
@@ -17,12 +16,16 @@
                 movies = data;
                 movies.forEach(movie => {
                     HTMLString = `
-                    <h3>${ movie.Title }</h3>
-                    <h4>${ movie.DirectorName }</h4>
-                    <h5>${ movie.Genre }</h5>
-                    <button id='MovieId-${ movie.MovieId }' class='show-more'> More Info </button>
-                    <hr>
+                    <div id='DisplaySection-${ movie.MovieId }'>
+                        <h3 class='display-${ movie.MovieId }'>${ movie.Title }</h3>
+                        <h4 class='display-${ movie.MovieId }'>${ movie.DirectorName }</h4>
+                        <h5 class='display-${ movie.MovieId }'>${ movie.Genre }</h5>
+                        <button id='MovieId-${ movie.MovieId }' class='show-more'> More Info </button>
+                        <button id='EditMovieId-${ movie.MovieId }' class='edit-movie'> Edit </button>
+                        <hr></hr>
+                    </div>
                     `;
+                    console.log(HTMLString);
                     
                 $(movieList).append(HTMLString);
                 console.log(endpoint);
@@ -39,12 +42,10 @@
 /****************************** GET (by MovieId) Request ******************************/
     // Displays a single movie and its information
     $(document).on('click', '.show-more', function(event) {
-        id = extractId(event.target.getAttribute("id"));
-        console.log(id);
+        let id = extractId(event.target.getAttribute("id"));
 
         // concatenate id onto endpoint
         endpoint = endpoint + id;
-        console.log(endpoint);
 
         $.ajax({
             url: endpoint,
@@ -56,7 +57,7 @@
             },
             err: error => {
                 endpoint = resetEndpoint(endpoint);
-                // console.log(error)
+                console.log(error)
             }
         });
     });
@@ -80,12 +81,11 @@
         let showMoviesBtn;
 
         htmlForSingleMovie = `
-        <h1>${ movie.Title }</h1>
-        <h3>${ movie.DirectorName }</h3>
-        <h4>${ movie.Genre }</h4>
+        <h1 class='display-${ movie.MovieId }'>${ movie.Title }</h1>
+        <h3 class='display-${ movie.MovieId }'>${ movie.DirectorName }</h3>
+        <h4 class='display-${ movie.MovieId }'>${ movie.Genre }</h4>
         <button id='show-all-movies'>Show All Movies</button>
         `;
-
         $(movieList).empty();
         $(movieList).append(htmlForSingleMovie);
         
@@ -95,6 +95,63 @@
             getMovies();
         });
     }
+    /****************************** PUT Request ******************************/
+    $(document).on('click', '.edit-movie', function (event) {
+        let id = extractId(event.target.getAttribute("id"));
+        let headerClass = `display-${id}`;
+        let displayDivId = `DisplaySection-${id}`;
+        let headerValues = Array.prototype.slice.call(document.querySelectorAll(`.${ headerClass }`)).map(el => el.textContent);
+        let displayDiv = document.getElementById(displayDivId);
+        let input;
+        let hrTag;
+        let updateButton;
+        let htmlInputString = `
+        <input='text' name='title' value='${headerValues[0]}'>
+        <input='text' name='title' value='${headerValues[1]}'>
+        <input='text' name='title' value='${headerValues[2]}'>
+        <button type="submit" id="edit-movie">Update</button>
+        `;
+
+        $(displayDiv).empty();
+        
+        for(let i = 0; i < headerValues.length; i++) {
+            input = document.createElement('input');
+            input.type = 'text';
+            input.value = headerValues[i];
+            displayDiv.appendChild(input);
+        }
+
+        hrTag = document.createElement('hr');
+        updateButton = document.createElement('button');
+        updateButton.id = 'edit-movie-button';
+        updateButton.textContent = "Update";
+
+        displayDiv.appendChild(updateButton);
+        displayDiv.appendChild(hrTag);
+
+        document.getElementById('edit-movie-button').addEventListener('click', () => console.log('coming from the edit update btn'));
+        
+
+        // change headings to input='text'
+            // grab all headings with same class 
+            // change remove class 
+        // concatenate id onto endpoint
+        endpoint = endpoint + id;
+
+        // $.ajax({
+        //     url: endpoint,
+        //     dataType: 'json',
+        //     type: 'PUT',
+        //     success: result => {
+        //         endpoint = resetEndpoint(endpoint);
+        //         displayMovie(result);
+        //     },
+        //     err: error => {
+        //         endpoint = resetEndpoint(endpoint);
+        //         console.log(error)
+        //     }
+        // });
+    });
 
     /****************************** POST Request ******************************/
     function createMovie(e) {
@@ -104,7 +161,7 @@
             DirectorName: this["director"].value
             
         };
-        console.log(endpoint);
+
         $.ajax({
             url: endpoint,
             dataType: 'json',
