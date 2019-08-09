@@ -137,6 +137,7 @@
                         input.name = 'genre';
                         break;
             }
+            
             input.id = `EditMovie-${id}`;
             input.value = headerValues[i];
             updateForm.appendChild(input);
@@ -169,8 +170,6 @@
             data: JSON.stringify(movie),
             success: function () {
                 showUpdatedMovie();
-                // $(movieList).empty();
-                // getMovies();
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 return errorThrown
@@ -189,8 +188,6 @@
             success: result => {
                 endpoint = resetEndpoint(endpoint);
                 editing = false;
-                // displayMovie(result);
-                // clear current div 
                 let displayDiv = document.getElementById(`DisplaySection-${result.MovieId}`);
                 let updatedMovieHTML = HTMLString = `
                     <div id='DisplaySection-${ result.MovieId}'>
@@ -203,8 +200,6 @@
                     </div>
                     `;
                 $(displayDiv).empty();
-                // append new html string to recreate what was shown
-
                 $(displayDiv).append(updatedMovieHTML);
                 
             },
