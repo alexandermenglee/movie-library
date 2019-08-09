@@ -98,15 +98,14 @@
     }
     /****************************** PUT Request ******************************/
     $(document).on('click', '.edit-movie', function (event) {
-
         if(editing === true) {
             return alert("Please finish updating the currently selected movie");
         }
 
 
         let id = extractId(event.target.getAttribute("id"));
-        let headerClass = `display-${id}`;
-        let displayDivId = `DisplaySection-${id}`;
+        let headerClass = `display-${ id }`;
+        let displayDivId = `DisplaySection-${ id }`;
         let headerValues = Array.prototype.slice.call(document.querySelectorAll(`.${ headerClass }`)).map(el => el.textContent);
         let displayDiv = document.getElementById(displayDivId);
         let formTag;
@@ -114,7 +113,6 @@
         let hrTag;
         let updateButton;
         let updateForm;
-        debugger;
         editing = true;
 
         $(displayDiv).empty();
@@ -163,7 +161,6 @@
             DirectorName: this["director"].value,
             Genre: this["genre"].value
         };
-
         $.ajax({
             url: endpoint,
             dataType: 'json',
@@ -171,10 +168,9 @@
             contentType: 'application/json',
             data: JSON.stringify(movie),
             success: function () {
-                endpoint = resetEndpoint(endpoint);
-                editing = false;
-                $(movieList).empty();
-                getMovies();
+                showUpdatedMovie();
+                // $(movieList).empty();
+                // getMovies();
             },
             error: function (jqXhr, textStatus, errorThrown) {
                 return errorThrown
@@ -182,6 +178,41 @@
         });
 
         e.preventDefault();
+    }
+
+    function showUpdatedMovie() {
+        
+        $.ajax({
+            url: endpoint,
+            dataType: 'json',
+            type: 'GET',
+            success: result => {
+                endpoint = resetEndpoint(endpoint);
+                editing = false;
+                // displayMovie(result);
+                // clear current div 
+                let displayDiv = document.getElementById(`DisplaySection-${result.MovieId}`);
+                let updatedMovieHTML = HTMLString = `
+                    <div id='DisplaySection-${ result.MovieId}'>
+                        <p class='display-${ result.MovieId} title'>${result.Title}</p>
+                        <p class='display-${ result.MovieId} director-name'>${result.DirectorName}</p>
+                        <p class='display-${ result.MovieId} genre'>${result.Genre}</p>
+                        <button id='MovieId-${ result.MovieId}' class='show-more btn'> More Info </button>
+                        <button id='EditMovieId-${ result.MovieId}' class='edit-movie btn'> Edit </button>
+                        <hr></hr>
+                    </div>
+                    `;
+                $(displayDiv).empty();
+                // append new html string to recreate what was shown
+
+                $(displayDiv).append(updatedMovieHTML);
+                
+            },
+            err: error => {
+                endpoint = resetEndpoint(endpoint);
+                return error;
+            }
+        });
     }
     /****************************** POST Request ******************************/
     function createMovie(e) {
